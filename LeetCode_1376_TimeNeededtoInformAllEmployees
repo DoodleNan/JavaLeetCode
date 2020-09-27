@@ -1,0 +1,61 @@
+class Solution {
+    int globalMax = Integer.MIN_VALUE;
+    Map<Integer, List<Integer>> managerToEmployee;
+    public int numOfMinutes(int n, int headID, int[] manager, int[] informTime) {
+        
+        managerToEmployee = new HashMap<>();
+        
+        for(int employeeId = 0; employeeId < n; employeeId++) {
+            int managerId = manager[employeeId];
+            if(!managerToEmployee.containsKey(managerId)) {
+                managerToEmployee.put(managerId, new ArrayList<Integer>());
+            }
+            managerToEmployee.get(managerId).add(employeeId);
+        }
+        
+        bfs(headID, informTime, 0);
+        
+        return globalMax;
+    }
+    
+    private void bfs(int employeeId, int[] informTime, int totalTime) {
+        if(managerToEmployee.get(employeeId) == null) {
+            globalMax = globalMax > totalTime ? globalMax : totalTime;
+            return;
+        }
+        
+        for(Integer employee : managerToEmployee.get(employeeId)) {
+            bfs(employee, informTime, totalTime + informTime[employeeId]);
+        }
+    }
+}
+
+class Solution {
+    Map<Integer, List<Integer>> managerToEmployee;
+    public int numOfMinutes(int n, int headID, int[] manager, int[] informTime) {
+        
+        managerToEmployee = new HashMap<>();
+        
+        for(int employeeId = 0; employeeId < n; employeeId++) {
+            int managerId = manager[employeeId];
+            if(!managerToEmployee.containsKey(managerId)) {
+                managerToEmployee.put(managerId, new ArrayList<Integer>());
+            }
+            managerToEmployee.get(managerId).add(employeeId);
+        }
+        
+        return dfs(headID, informTime);
+    }
+   
+    private int dfs(int employeeId, int[] informTime) {
+        int result = 0;
+        if(managerToEmployee.get(employeeId) != null) {
+            for(Integer employee : managerToEmployee.get(employeeId)) {
+                result = Math.max(result, dfs(employee, informTime));
+            }
+            
+        }
+        
+        return result + informTime[employeeId];
+    }
+}
