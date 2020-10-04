@@ -1,0 +1,35 @@
+class Solution {
+    public int longestSubarray(int[] nums, int limit) {
+        if(nums == null || nums.length == 0) return 0; 
+        int result = 1;
+        ArrayDeque<Integer> deqMax = new ArrayDeque<Integer>();
+        ArrayDeque<Integer> deqMin = new ArrayDeque<Integer>();
+        
+        int left = 0;
+        int right = 0;
+        while(right < nums.length) {
+            while(!deqMax.isEmpty() && nums[deqMax.peekLast()] <= nums[right]) {
+                deqMax.pollLast();
+            }
+            
+            while(!deqMin.isEmpty() && nums[deqMin.peekLast()] >= nums[right]) {
+                deqMin.pollLast();
+            }
+            
+            deqMax.offer(right);
+            deqMin.offer(right);
+            
+            // Move left pointer
+            while(nums[deqMax.peekFirst()] - nums[deqMin.peekFirst()] > limit) {
+                if(deqMax.peekFirst() == left) deqMax.pollFirst();
+                if(deqMin.peekFirst() == left) deqMin.pollFirst();
+                left++;
+            }
+            
+            result = Math.max(result, right-left+1);
+            right++;
+        }
+        
+        return result;
+    }
+}
