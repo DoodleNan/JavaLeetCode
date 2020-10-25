@@ -1,0 +1,24 @@
+class Solution {
+    public int calPoints(String[] ops) {
+        LinkedList<Integer> score = new LinkedList<>();
+        for(String op : ops) {
+            if(op.equals("D")) {
+                score.addLast(score.getLast() * 2);
+            }else if(op.equals("C")) {
+                score.removeLast();
+            }else if(op.equals("+")){
+                int size = score.size();
+                score.addLast(score.get(size-1) + score.get(size-2));
+            }else{
+                score.addLast(Integer.valueOf(op));
+            }
+        }
+        
+        int res = 0;
+        for(Integer i : score) {
+            res += i;
+        }
+        
+        return res;
+    }
+}
