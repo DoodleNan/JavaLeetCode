@@ -1,0 +1,36 @@
+class Solution {
+    public List<List<Integer>> largeGroupPositions(String s) {
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        if(s == null || s.length() < 3) return res;
+        Character pre = s.charAt(0);
+        int start = 0;
+        int end = 0;
+        int count = 1;
+        for(int i = 1; i < s.length(); i++) {
+            if(s.charAt(i) == pre) {
+                count++;
+                end++;
+            }else{
+                if(count >= 3) {
+                    List<Integer> cur = new ArrayList<>();
+                    cur.add(start);
+                    cur.add(end);
+                    res.add(cur);
+                }
+                count = 1;
+                pre = s.charAt(i);
+                start = i;
+                end = i;
+            }
+        }
+        
+        if(count >=3) {
+            List<Integer> cur = new ArrayList<>();
+            cur.add(start);
+            cur.add(end);
+            res.add(cur);
+        }
+        
+        return res;
+    }
+}
