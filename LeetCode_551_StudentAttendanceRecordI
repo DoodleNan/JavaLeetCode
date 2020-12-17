@@ -1,0 +1,28 @@
+class Solution {
+    public boolean checkRecord(String s) {
+        if(s == null) return false;
+        
+        int absent = 0;
+        int late = 0;
+        
+        for(int i = 0; i < s.length(); i++) {
+            if(s.charAt(i) == 'P') {
+                late = 0;
+            }else if(s.charAt(i) == 'A') {
+                absent++;
+                late = 0;
+                if(absent > 1) return false;
+            }else{
+                if(late == 0) {
+                    late++;
+                }else if(late == 1){
+                    late++;
+                }else{
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+}
