@@ -1,0 +1,22 @@
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int cur = m + n - 1;
+        int pm = m-1;
+        int pn = n-1;
+        
+        while(pm >= 0 || pn >= 0) {
+            int value1 = pm >= 0 ? nums1[pm] : Integer.MIN_VALUE;
+            int value2 = pn >= 0 ? nums2[pn] : Integer.MIN_VALUE;
+            
+            if(value1 >= value2) {
+                nums1[cur--] = value1;
+                pm--;
+            }else{
+                nums1[cur--] = value2;
+                pn--;
+            }
+        }
+        
+        return;
+    }
+}
