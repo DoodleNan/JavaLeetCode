@@ -1,0 +1,30 @@
+class Solution {
+    public int[][] matrixBlockSum(int[][] mat, int K) {
+        // sum (0,0,i,j)
+        int[][] sum = new int[mat.length+1][mat[0].length+1];
+        int[][] res = new int[mat.length][mat[0].length];
+        for(int i = 1; i <= mat.length; i++){
+            for (int j = 1; j <= mat[0].length; j++) {
+                sum[i][j] = sum[i][j-1] + sum[i-1][j] - sum[i-1][j-1] + mat[i-1][j-1];
+            }
+        }
+        
+        for(int i = 0; i < mat.length; i++){
+            for(int j = 0; j < mat[0].length; j++){
+                int rowStart = (i - K) >= 0 ? i - K : 0;
+                int rowEnd = (i + K) < mat.length? i + K : mat.length-1;
+                int colStart = (j - K) >= 0 ? j - K : 0;
+                int colEnd = (j + K) < mat[0].length ? j + K : mat[0].length-1;
+                
+                int sum1 = sum[rowEnd+1][colEnd+1];
+                int sum2 = sum[rowEnd+1][colStart];
+                int sum3 = sum[rowStart][colEnd+1];
+                int sum4 = sum[rowStart][colStart];
+                
+                res[i][j] = sum[rowEnd+1][colEnd+1] - sum[rowEnd+1][colStart] - sum[rowStart][colEnd+1] + sum[rowStart][colStart];
+            }
+        }
+        
+        return res;
+    }
+}
