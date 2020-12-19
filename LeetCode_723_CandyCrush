@@ -1,0 +1,55 @@
+class Solution {
+    public int[][] candyCrush(int[][] board) {
+        int Row = board.length;
+        int Col = board[0].length;
+        boolean found = true;
+        while(found){
+            found = false;
+            for(int i = 0; i < Row; i++){
+                for(int j = 0; j < Col; j++){
+                    int value = Math.abs(board[i][j]);
+                    if(value == 0) continue;
+                    if(i < Row - 2){
+                        int next = Math.abs(board[i+1][j]);
+                        int nextNext = Math.abs(board[i+2][j]);
+                        if(value == next && next == nextNext){
+                            found = true;
+                            int index = i;
+                            while(index < Row && Math.abs(board[index][j]) == value){
+                                board[index++][j] = -value;
+                            }
+                        }
+                    }
+                    
+                    if(j < Col - 2){
+                        int next = Math.abs(board[i][j+1]);
+                        int nextNext = Math.abs(board[i][j+2]);
+                        if(value == next && next == nextNext){
+                            found = true;
+                            int index = j;
+                            while(index < Col && Math.abs(board[i][index]) == value){
+                                board[i][index++] = -value;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if(found){
+                for(int col = 0; col < Col; col++){
+                    int storeIndex = Row-1;
+                    for(int row = Row-1; row >=0; row--){
+                        if(board[row][col] > 0){
+                            board[storeIndex--][col] = board[row][col];
+                        }
+                    }
+                    for(int row = storeIndex; row >= 0; row--){
+                        board[row][col] = 0;
+                    }
+                }
+            }
+        }
+        
+        return board;
+    }
+}
