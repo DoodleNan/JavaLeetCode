@@ -1,0 +1,25 @@
+class Solution {
+    public int[][] reconstructQueue(int[][] people) {
+        Arrays.sort(people, new Comparator<int[]>(){
+            @Override
+            public int compare(int[] a, int[] b) {
+                return a[0] == b[0] ? a[1] - b[1] : b[0] - a[0];
+            }
+        });
+        
+        List<int[]> arrayList = new ArrayList<int[]>();
+        int cur = people[0][0];
+        arrayList.add(people[0]);
+        for(int i = 1; i < people.length; i++) {
+            int height = people[i][0];
+            if(cur == height){
+                arrayList.add(people[i][1], people[i]);
+            }else{
+                cur = people[i][0];
+                arrayList.add(people[i][1], people[i]);
+            }
+        }
+        
+        return arrayList.toArray(new int[people.length][2]);
+    }
+}
