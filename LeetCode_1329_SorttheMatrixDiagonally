@@ -1,0 +1,41 @@
+class Solution {
+    public int[][] diagonalSort(int[][] mat) {
+        int row = mat.length;
+        int col = mat[0].length;
+        
+        // lower left corner
+        for(int i = 0; i < row; i++) {
+            sortDiagonal(i, 0, mat);
+        }
+        
+        // upper right corner
+        for(int i = 1; i < col; i++) {
+            sortDiagonal(0, i, mat);
+        }
+        
+        return mat;
+    }
+    
+    private void sortDiagonal(int i, int j, int[][] mat) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        int row = mat.length;
+        int col = mat[0].length;
+        
+        int indexRow = i;
+        int indexCol = j;
+        
+        while(indexRow < row && indexCol < col) {
+            pq.add(mat[indexRow][indexCol]);
+            indexRow++;
+            indexCol++;
+        }
+        
+        indexRow = i; 
+        indexCol = j;
+        while(indexRow < row && indexCol < col) {
+            mat[indexRow][indexCol] = pq.poll();
+            indexRow++;
+            indexCol++;
+        }
+    }
+}
