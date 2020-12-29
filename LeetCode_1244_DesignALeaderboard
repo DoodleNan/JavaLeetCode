@@ -1,0 +1,44 @@
+class Leaderboard {
+    Map<Integer, Integer> hm = new HashMap<>();
+    
+    public Leaderboard() {
+        
+    }
+    
+    public void addScore(int playerId, int score) {
+        if(hm.containsKey(playerId)) {
+            hm.put(playerId, hm.get(playerId) + score);
+        }else{
+            hm.put(playerId, score);
+        }
+    }
+    
+    public int top(int K) {
+        PriorityQueue<Map.Entry<Integer, Integer>> pq = new PriorityQueue<>((a, b) -> a.getValue() - b.getValue());
+        
+        for(Map.Entry<Integer, Integer> entry : hm.entrySet()) {
+            pq.offer(entry);
+            if(pq.size() > K) pq.poll();
+        }
+        
+        int sum = 0;
+        Iterator value = pq.iterator();
+        while(value.hasNext()) {
+            sum += ((Map.Entry<Integer, Integer>)value.next()).getValue();
+        }
+        
+        return sum;
+    }
+    
+    public void reset(int playerId) {
+        hm.put(playerId, 0);
+    }
+}
+
+/**
+ * Your Leaderboard object will be instantiated and called as such:
+ * Leaderboard obj = new Leaderboard();
+ * obj.addScore(playerId,score);
+ * int param_2 = obj.top(K);
+ * obj.reset(playerId);
+ */
