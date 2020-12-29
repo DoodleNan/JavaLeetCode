@@ -1,0 +1,33 @@
+class Solution {
+    public int earliestAcq(int[][] logs, int N) {
+        Arrays.sort(logs, new Comparator<int[]>(){
+            @Override
+            public int compare(int[] a, int[] b){
+                return a[0] - b[0];
+            }
+        });
+        
+        int parentCount = N;
+        int[] parent = new int[N];
+        for(int i = 0; i < N; i++) {
+            parent[i] = i;
+        }
+        for(int i = 0; i < logs.length; i++) {
+            int[] log = logs[i];
+            int pa = find(parent, log[1]);
+            int pb = find(parent, log[2]);
+            
+            if(pa != pb) {
+                parentCount--;
+                if(parentCount == 1) return log[0];
+                parent[pa] = pb;
+            }
+        }
+        
+        return -1;
+    }
+    
+    private int find(int[] parent, int i) {
+        return parent[i] == i ? i : find(parent, parent[i]);
+    }
+}
