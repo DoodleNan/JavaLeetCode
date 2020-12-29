@@ -1,0 +1,22 @@
+class Solution {
+    List<String> res = new ArrayList<>();
+    public List<String> generateParenthesis(int n) {
+        helper("(", 1, 0, n);
+        
+        return res;
+    }
+    
+    private void helper(String prefix, int left, int right, int total) {
+        if(prefix.length() == total * 2){
+            res.add(prefix);
+        }else{
+            if(left < total) {
+                helper(prefix + "(", left + 1, right, total);
+            }
+            
+            if(right < left) {
+                helper(prefix + ")", left, right + 1, total);
+            }
+        }
+    }
+}
