@@ -1,0 +1,37 @@
+class HitCounter {
+    int cur = 1;
+    PriorityQueue<Integer> pq = new PriorityQueue<>();
+    /** Initialize your data structure here. */
+    public HitCounter() {
+        
+    }
+    
+    /** Record a hit.
+        @param timestamp - The current timestamp (in seconds granularity). */
+    public void hit(int timestamp) {
+        pq.offer(timestamp);
+    }
+    
+    /** Return the number of hits in the past 5 minutes.
+        @param timestamp - The current timestamp (in seconds granularity). */
+    public int getHits(int timestamp) {
+        cur = timestamp;
+        int start = timestamp > 300 ? timestamp - 299 : 1;
+        while(!pq.isEmpty()){
+            int val = pq.peek();
+            if(val < start) {
+                pq.poll();
+            }else{
+                break;
+            }
+        }
+        return pq.size();
+    }
+}
+
+/**
+ * Your HitCounter object will be instantiated and called as such:
+ * HitCounter obj = new HitCounter();
+ * obj.hit(timestamp);
+ * int param_2 = obj.getHits(timestamp);
+ */
