@@ -1,0 +1,23 @@
+class Solution {
+    public int scoreOfParentheses(String S) {
+        Stack<Integer> stack = new Stack<>();
+        
+        stack.push(0);
+        // Stack stores the inner sum of a '('
+        for(char c : S.toCharArray()) {
+            if(c == '(') {
+                stack.push(0);
+            }else{
+                int top = stack.pop();
+                int parent = stack.pop();
+                if(top == 0) {
+                    stack.push(parent + 1);
+                }else{
+                    stack.push(parent + 2 * top);
+                }
+            }
+        }
+        
+        return stack.pop();
+    }
+}
