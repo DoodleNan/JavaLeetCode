@@ -1,0 +1,27 @@
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int length = nums.length;
+        
+        int[] left = new int[length];
+        left[0] = nums[0];
+        int[] right = new int[length];
+        right[0] = nums[nums.length-1];
+        
+        int[] res = new int[length];
+    
+        
+        for(int i = 1; i < length; i++) {
+            left[i] = left[i-1] * nums[i];
+            right[i] = right[i-1] * nums[length-i-1];
+        }
+        
+        
+        res[0] = right[length-2];
+        res[length-1] = left[length-2];
+        for(int i = 1; i < length - 1; i++) {
+            res[i] = left[i-1] * right[length-i-2];
+        }
+        
+        return res;
+    }
+}
