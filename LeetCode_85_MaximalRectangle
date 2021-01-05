@@ -1,0 +1,73 @@
+class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        int res = 0;
+        if(matrix == null || matrix.length == 0 || matrix[0].length == 0) return res;
+        int row = matrix.length;
+        int col = matrix[0].length;
+        
+        int[] height = new int[col];
+        int[] left = new int[col];
+        int[] right = new int[col];
+        Arrays.fill(right, col);
+        
+        for(int i = 0; i < row; i++) {
+            for(int index = 0; index < col; index++) {
+                if(matrix[i][index] == '1') {
+                    height[index]++;
+                }else{
+                    height[index] = 0;
+                }
+            }
+            
+            int cur_left = 0;
+            int cur_right = col;
+            for(int index = 0; index < col; index++) {
+                if(matrix[i][index] == '1') {
+                    left[index] = Math.max(cur_left, left[index]);
+                }else{
+                    cur_left = index + 1;
+                    left[index] = 0;
+                }
+            }
+            
+            for(int index = col - 1; index >= 0; index--) {
+                if(matrix[i][index] == '1') {
+                    right[index] = Math.min(right[index], cur_right);
+                }else{
+                    cur_right = index;
+                    right[index] = col;
+                }
+            }
+            
+            for(int index = 0; index < col; index++) {
+                res = Math.max(res, (right[index] - left[index]) * height[index]);
+            }
+        }
+//         for(int i = 0; i < row; i++) {
+//             int[] height = new int[col];
+//             Arrays.fill(height, 1);
+//             for(int j = i; j < row; j++) {
+//                 int h = j - i + 1;
+//                 for(int index = 0; index < col; index++) {
+//                     height[index] = height[index] & matrix[j][index];
+//                 }
+//                 int length = 0;
+//                 for(int index = 0; index < col; index++) {
+//                     if(height[index] == 1) {
+//                         if(length == 0) {
+//                             length = 1;
+//                         }else{
+//                             length++;
+//                         }
+//                         res = Math.max(res, h * length);
+//                     }else{
+//                         res = Math.max(res, h * length);
+//                         length = 0;
+//                     }
+//                 }
+//             } 
+//         }
+        
+        return res;
+    }
+}
