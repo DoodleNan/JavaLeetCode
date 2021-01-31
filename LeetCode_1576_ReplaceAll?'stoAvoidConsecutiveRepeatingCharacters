@@ -1,0 +1,25 @@
+class Solution {
+    public String modifyString(String s) {
+        StringBuilder sb = new StringBuilder();
+        sb.append('a');
+        sb.append(s);
+        sb.append('a');
+        
+        char[] values = new char[]{'a', 'b', 'c'};
+        
+        for(int i = 1; i < sb.length() - 1; i++) {
+            if(sb.charAt(i) == '?') {
+                char pre = sb.charAt(i - 1);
+                char after = sb.charAt(i + 1);
+                for(char c : values) {
+                    if(c != pre && c != after) {
+                        sb.replace(i, i+1, Character.toString(c));
+                        break;
+                    }
+                }
+            }
+        }
+        
+        return sb.substring(1, sb.length()-1);
+    }
+}
