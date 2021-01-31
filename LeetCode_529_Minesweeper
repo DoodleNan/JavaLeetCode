@@ -1,0 +1,48 @@
+class Solution {
+    int[] dx = {-1, 0, 1, -1, 1, 0, 1, -1};
+    int[] dy = {-1, 1, 1, 0, -1, -1, 0, 1};
+    
+    public char[][] updateBoard(char[][] board, int[] click) {
+        if(board[click[0]][click[1]] == 'M') {
+            board[click[0]][click[1]] = 'X';
+            return board;
+        }else{
+            dfs(board, click);
+                
+            return board;
+        }  
+    }
+    
+    private void dfs(char[][] board, int[] click) {
+        if(board[click[0]][click[1]] == 'M') return;
+        if(board[click[0]][click[1]] == 'B') return;
+        
+        int count = 0;
+        for(int i = 0; i < 8; i++) {
+            int x = click[0] + dx[i];
+            int y = click[1] + dy[i];
+
+            if(x < 0 || x >= board.length || y < 0 || y >= board[0].length) {
+                continue;
+            }else{
+                if(board[x][y] == 'M') count++;
+            }
+        }
+        
+        if(count > 0) {
+            board[click[0]][click[1]] = (char)('0' + count);
+        }else{
+            board[click[0]][click[1]] = 'B';
+            for(int i = 0; i < 8; i++) {
+                int x = click[0] + dx[i];
+                int y = click[1] + dy[i];
+            
+                if(x < 0 || x >= board.length || y < 0 || y >= board[0].length) {
+                    continue;
+                }else if(board[x][y] == 'E') {
+                    dfs(board, new int[]{x, y});
+                }
+            }
+        }
+    }
+}
