@@ -1,0 +1,48 @@
+class Solution {
+    public List<List<String>> groupStrings(String[] strings) {
+        Map<Integer, List<String>> hm = new HashMap<>();
+        List<List<String>> res = new ArrayList<>();
+        for(String s : strings) {
+            int length = s.length();
+            if(hm.containsKey(length)) {
+                hm.get(length).add(s);
+            }else{
+                List<String> hmStrings = new ArrayList<>();
+                hmStrings.add(s);
+                hm.put(length, hmStrings);
+            }
+        }
+        
+        for(Map.Entry<Integer, List<String>> entry : hm.entrySet()) {
+            int length = entry.getKey();
+            List<String> stringList = entry.getValue();
+            if(length == 1 || stringList.size() <= 1) {
+                res.add(stringList);
+            }else{
+                Map<List<Integer>, List<String>> hashMap = new HashMap<>();
+                for(String s : stringList) {
+                    List<Integer> diffs = new ArrayList<>();
+                    for(int i = 1; i < s.length(); i++) {
+                        int diff = s.charAt(i) - s.charAt(i - 1);
+                        if(diff < 0) diff += 26;
+                        diffs.add(diff);
+                    }
+                    
+                    if(hashMap.containsKey(diffs)) {
+                        hashMap.get(diffs).add(s);
+                    }else{
+                        List<String> hashMapStrings = new ArrayList<>();
+                        hashMapStrings.add(s);
+                        hashMap.put(diffs, hashMapStrings);
+                    }
+                }
+                
+                for(List<String> list : hashMap.values()) {
+                    res.add(list);
+                }
+            }
+        }
+        
+        return res;
+    }
+}
