@@ -1,0 +1,66 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    private Map<TreeNode, TreeNode> hm = new HashMap<>();
+    private Set<Integer> res = new HashSet<>();
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int K) {
+        findParent(root, null);
+        
+        dfs_down(target, K, 0);
+        dfs_up(target, K, 0);
+        
+        return new ArrayList<>(res);
+    }
+    
+    private void findParent(TreeNode cur, TreeNode parent) {
+        if(cur == null) return;
+        
+        hm.put(cur, parent);
+        findParent(cur.left, cur);
+        findParent(cur.right, cur);
+    }
+    
+    private void dfs_down(TreeNode cur, int target, int distance) {
+        if(cur == null) return;
+        if(distance == target) {
+            res.add(cur.val);
+        }else{
+            if(cur.left != null) {
+                dfs_down(cur.left, target, distance+1);
+            }
+            
+            if(cur.right != null) {
+                dfs_down(cur.right, target, distance+1);
+            }
+        }
+    }
+    
+    private void dfs_up(TreeNode cur, int target, int distance) {
+        if(distance == target) {
+            res.add(cur.val);
+        }else{
+            while(hm.get(cur) != null) {
+                TreeNode parent = hm.get(cur);
+                if(target - distance == 1){
+                    res.add(parent.val);
+                    break;
+                }else{
+                    if(parent.left == cur){
+                        dfs_down(parent.right, target, distance + 2);
+                    }else{
+                        dfs_down(parent.left, target, distance + 2);
+                    }
+                    cur = parent;
+                    distance++;
+                }
+            }
+        }  
+    }
+}
