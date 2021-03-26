@@ -1,0 +1,27 @@
+class Solution {
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        LinkedList<int[]> merged = new LinkedList<>();
+        
+        List<int[]> all = new ArrayList<>();
+        for(int[] interval : intervals) {
+            all.add(interval);
+        }
+        all.add(newInterval);
+        Collections.sort(all, (a, b) -> Integer.compare(a[0], b[0]));
+
+        for(int[] interval : all) {
+            if(merged.isEmpty()) {
+                merged.add(interval);
+            }else{
+                int[] cur = merged.getLast();
+                if(interval[0] > cur[1]) {
+                    merged.add(interval);
+                }else{
+                    cur[1] = Math.max(interval[1], cur[1]);
+                }
+            }
+        }
+        
+        return merged.toArray(new int[merged.size()][]);
+    }
+}
