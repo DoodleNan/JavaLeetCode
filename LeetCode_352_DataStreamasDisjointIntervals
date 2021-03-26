@@ -1,0 +1,46 @@
+class SummaryRanges {
+
+    TreeMap<Integer, int[]> map;
+    /** Initialize your data structure here. */
+    public SummaryRanges() {
+        map = new TreeMap<>();
+    }
+    
+    public void addNum(int val) {
+        TreeMap<Integer, int[]> map1 = map;
+        if(map.containsKey(val)) return;
+        Integer higher = map.higherKey(val);
+        Integer lower = map.lowerKey(val);
+        
+        if(higher != null && lower != null && higher-1==val && map.get(lower)[1] + 1 == val){
+            map.get(lower)[1] = map.get(higher)[1];
+            map.remove(higher);
+        }else if(higher != null && val + 1 == higher) {
+            map.put(val, new int[]{val, map.get(higher)[1]});
+            map.remove(higher);
+        }else if(lower != null && map.get(lower)[1] + 1 >= val) {
+            map.put(lower, new int[]{lower, Math.max(val, map.get(lower)[1])});
+        }else{
+            map.put(val, new int[]{val, val});
+        }
+        
+        map1 = map;
+    }
+    
+    public int[][] getIntervals() {
+        ArrayList<int[]> res = new ArrayList<>();
+        for(Map.Entry<Integer, int[]> entry : map.entrySet()) {
+            res.add(entry.getValue());
+        }
+        
+        return res.toArray(new int[res.size()][]);
+        
+    }
+}
+
+/**
+ * Your SummaryRanges object will be instantiated and called as such:
+ * SummaryRanges obj = new SummaryRanges();
+ * obj.addNum(val);
+ * int[][] param_2 = obj.getIntervals();
+ */
