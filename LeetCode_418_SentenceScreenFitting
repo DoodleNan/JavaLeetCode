@@ -1,0 +1,29 @@
+class Solution {
+    public int wordsTyping(String[] sentence, int rows, int cols) {
+        int res = 0;
+        int sentenceCount = sentence.length;
+        Map<Integer, Integer> hm = new HashMap<>();
+        int wordCount = 0;
+        for(int i = 0; i < rows; i++) {
+            int indexCol = -1;
+            int wordIndex = wordCount % sentenceCount;
+            int startWordIndex = wordIndex;
+            if(hm.containsKey(wordIndex)) {
+                wordCount += hm.get(wordIndex);
+                continue;
+            }
+            int wordCountInRow = 0;
+            while(indexCol + sentence[wordIndex].length() < cols) {
+                indexCol += sentence[wordIndex].length();
+                wordCount++;
+                wordIndex = wordCount % sentenceCount;
+                indexCol++;
+                wordCountInRow++;
+            }
+            
+            hm.put(startWordIndex, wordCountInRow);
+        }
+        
+        return wordCount / sentenceCount;
+    }
+}
